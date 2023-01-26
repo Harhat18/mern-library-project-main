@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 const BookStore = require("./models/BookModel");
+const { error } = require("console");
 
 const app = express();
 
@@ -25,6 +26,17 @@ mongoose
 
 app.get("/books", (req, res) => {
   BookStore.find().then((books) => res.json(books));
+});
+
+app.delete("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  BookStore.findByIdAndDelete({ _id: id }, (err) => {
+    if (!err) {
+      console.log("book deleted");
+    } else {
+      console.log(err);
+    }
+  });
 });
 
 app.post("/newbook", async (req, res) => {
