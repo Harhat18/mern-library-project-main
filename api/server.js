@@ -3,19 +3,45 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
+const BookStore = require("./models/BookModel");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
-// app.get("/", (req, res) => {
-//   res.send("hoşgeldiniz");
-// });
+//mongoose connection
+mongoose.set("strictQuery", true);
+mongoose
+  .connect(
+    "mongodb+srv://harhat:12341234@cluster0.vxlqvgg.mongodb.net/books?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(console.log("connected database"))
+  .catch((err) => console.log(err));
 
-// app.get("/haberler", (req, res) => {
-//   res.send("<h1>Haberler1</h1>");
-// });
+app.get("/books", (req, res) => {
+  BookStore.find().then((books) => res.json(books));
+});
+
+app.post("/newbook", async (req, res) => {
+  try {
+    const newBook = new BookStore({
+      bookName: req.body.bookName,
+      author: req.body.author,
+      quantity: req.body.quantity,
+      department: req.body.department,
+      comments: req.body.comments,
+    });
+    const book = await newBook.save();
+    res.status(200).json(book);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 app.listen(3000, () => {
   console.log("server çalıştı");
