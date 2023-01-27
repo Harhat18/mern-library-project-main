@@ -1,7 +1,57 @@
+import React, { useState, useEffect } from "react";
+
 import "./App.css";
 import AddBook from "./component/AddBook";
+import Books from "./component/Books";
+import axios from "axios";
 
 function App() {
+  const [books, setBooks] = useState([]);
+  const [book, setBook] = useState({
+    bookName: "",
+    author: "",
+    quantity: "",
+    department: "",
+    comments: "",
+  });
+  useEffect(() => {
+    fetch("/Books")
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((jsonRes) => setBooks(jsonRes));
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setBook((prevInput) => {
+      return {
+        ...prevInput,
+        [name]: value,
+      };
+    });
+  };
+  const addBook = (e) => {
+    e.preventDefault();
+    const newBook = {
+      bookname: book.bookName,
+      author: book.author,
+      quantity: book.quantity,
+      department: book.department,
+      comments: book.comments,
+    };
+    axios.post("/nexbook", newBook);
+    alert(`The book ${book.bookName} is added`);
+    setBook({
+      bookName: "",
+      author: "",
+      quantity: "",
+      department: "",
+      comments: "",
+    });
+  };
   return (
     <div className="App">
       <nav
@@ -92,7 +142,8 @@ function App() {
           </div>
         </div>
       </nav>
-      <AddBook />
+      <Books books={books} />
+      <AddBook book={book} handleChange={handleChange} addBook={addBook} />
     </div>
   );
 }
