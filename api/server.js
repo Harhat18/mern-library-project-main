@@ -15,7 +15,7 @@ app.use(cors());
 mongoose.set("strictQuery", true);
 mongoose
   .connect(
-    "mongodb+srv://harhat:12341234@cluster0.vxlqvgg.mongodb.net/books?retryWrites=true&w=majority",
+    "mongodb+srv://harhat18:12341234@cluster0.rcsrylh.mongodb.net/?retryWrites=true&w=majority",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
