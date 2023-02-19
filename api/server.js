@@ -4,8 +4,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path");
 const BookStore = require("./models/BookModel");
-const { error } = require("console");
 
+const PORT = process.env.PORT;
 const app = express();
 
 app.use(bodyParser.json());
@@ -72,6 +72,6 @@ app.post("/newbook", async (req, res) => {
   }
 });
 
-app.listen(4000, () => {
+app.listen(PORT, () => {
   console.log("server çalıştı");
 });
