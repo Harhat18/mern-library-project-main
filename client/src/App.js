@@ -16,7 +16,7 @@ function App() {
     comments: "",
   });
   useEffect(() => {
-    fetch("/books")
+    fetch("https://powerful-reef-73031.herokuapp.com/books")
       .then((res) => {
         if (res.ok) {
           return res.json();
